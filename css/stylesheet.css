@@ -1,0 +1,173 @@
+/* Argh some bug in BlogIT (reported on 2017-07-11), so I must override it here instead of using the Customize function of Wordpress and our theme */
+header#masthead {
+	background-image: url(https://blogit.itu.dk/mappingacolonyen/wp-content/uploads/sites/44/2017/07/chaney.jpg);
+	background-size: 100%;
+	background-position-y: 400px;
+}
+
+img.popup {
+	width: 100%;
+}
+
+div.popupAddress {
+	font-size: smaller;
+	font-style: italic;
+	text-align: right;
+	color: grey;
+}
+
+div.popupCaption {
+	font-size: smaller;
+	text-align: center;
+}
+
+div.contributor {
+	font-style: italic;
+	text-align: right;
+}
+
+div.sources {
+	background-color: lightgrey;
+	font-size: smaller;
+	padding: 5px;
+}
+
+svg#d3svgElement {
+	background: #c6c6c6;
+}
+
+div#storymap {
+	height: 600px;
+}
+
+div.loading {
+	padding: 5%;
+	background-color: #e0e0e0;
+}
+
+@keyframes loading-throb {
+	from {opacity: 0.2;}
+	to {opacity: 1;}
+}
+
+span.loading-text {
+	animation-name: loading-throb;
+	animation-duration: .5s;
+	animation-direction: alternate;
+	animation-iteration-count: infinite;
+}
+
+.markerMap {
+	border: 1px solid white;
+	height: 600px;
+}
+
+rect.story {
+	stroke: black;
+	stroke-width: 2;
+	fill-opacity: 0.6;
+}
+
+rect.empty-story {
+	fill-opacity: 0.3;
+}
+
+.person {
+	/* color: #c34528;
+	fill: #c34528; */
+	color: #314057;
+	fill: #314057;
+	fill-opacity: 0.6;
+	stroke: black;
+	stroke-width: 2;
+
+}
+
+.place {
+	/* color: green;
+	fill: green; */
+	color: #310457;
+	fill: #314057;
+	fill-opacity: 0.6;
+	stroke: black;
+	stroke-width: 2;
+}
+
+#sm-selector {
+	margin-bottom: 20px;
+}
+
+button {
+	font-weight: unset;
+	padding: 5px;
+	margin: 3px;
+}
+
+.narrative-button[disabled] {
+	/* background: #fefefe; */
+	background: #314057;
+	color: #e2e2e2;
+	pointer-events: none;
+}
+
+.vco-storymap {
+	height: 600px;
+}
+
+/* This allows adding more markers, but adds some funk regarding lines and break zoom */
+.vco-map .leaflet-overlay-pane {
+/*	z-index: 400; */
+}
+
+.vco-map .vco-mapmarker-active {
+	color: #314057;
+}
+
+.graticule {
+	fill-opacity: 0;
+	stroke: #e0e0e0;
+}
+
+.land {
+	fill: grey;
+	stroke: lightgrey;
+	opacity: 0.2;
+}
+
+.global-bounds {
+	fill: #310457;
+	fill-opacity: 0.5;
+	stroke: black;
+}
+
+.global-bounds:hover {
+	fill-opacity: 1;
+	stroke-width: 2px;
+}
+
+.map-highlight {
+	border: 1px solid black;
+}
+
+div.gallery-nest {
+	clear: both;
+}
+
+img.gallery-thumbnail {
+	height: 200px;
+	padding: 0px 10px;
+}
+
+div.europeana-subjects {
+	background-color: #4BC0F0;
+	padding: 10px;
+}
+
+a.europeana-link {
+	text-decoration: none;
+	color: black;
+}
+
+img.europeana-logo {
+	height: 30px;
+}
