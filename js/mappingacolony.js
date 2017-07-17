@@ -428,64 +428,64 @@ d3.request(dataUrl, function(error, xhr) {
 			onEachFeature: onEachFeature
 		}).addTo(maps.cph);
 	}
-		   
-	// A global projection
-	if(!svgGlobalProjection.empty()) {
-		projection = d3.geoOrthographic()
-			.scale(150)
-			.rotate([30, -45, -20])
-			.translate(
-				[svgGlobalProjection.node().getBoundingClientRect().width / 2,
-				 svgGlobalProjection.node().getBoundingClientRect().height / 2])
-		
-		var graticule = d3.geoGraticule();
-		var path = d3.geoPath()
-			.projection(projection);
-
-		svgGlobalProjection.append("path")
-			.datum(graticule)
-			.classed("graticule", true)
-			.attr("d", path);
-		
-		d3.json("https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json", function(error, world) {
-			if(error) throw error;
-			
-			console.log(world);
-			svgGlobalProjection.selectAll("path.land")
-				.data(world.features) // .datum() instead maybe?
-				.enter()
-				.append("path")
-				.classed("land", true)
-				.attr("d", path)
-			
-			svgGlobalProjection
-				.datum(getBoundingFeature(maps.vi))
-				.append("path")
-				.attr("id", "vi")
-				.classed("global-bounds", true)
-				.attr("d", path)
-				.on("mouseover", function(e) {
-					maps.vi.getContainer().classList.add("map-highlight");
-				})
-				.on("mouseout", function(e) {
-					maps.vi.getContainer().classList.remove("map-highlight");
-				});
-			
-			svgGlobalProjection
-				.datum(getBoundingFeature(maps.cph))
-				.append("path")
-				.attr("id", "cph")
-				.classed("global-bounds", true)
-				.attr("d", path)
-				.on("mouseover", function(e) {
-					maps.cph.getContainer().classList.add("map-highlight");
-				})
-				.on("mouseout", function(e) {
-					maps.cph.getContainer().classList.remove("map-highlight");
-				})					
-		});
-	}
 });
+		   
+// A global projection
+if(!svgGlobalProjection.empty()) {
+	projection = d3.geoOrthographic()
+		.scale(150)
+		.rotate([30, -45, -20])
+		.translate(
+			[svgGlobalProjection.node().getBoundingClientRect().width / 2,
+			 svgGlobalProjection.node().getBoundingClientRect().height / 2])
+	
+	var graticule = d3.geoGraticule();
+	var path = d3.geoPath()
+		.projection(projection);
+
+	svgGlobalProjection.append("path")
+		.datum(graticule)
+		.classed("graticule", true)
+		.attr("d", path);
+	
+	d3.json("https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json", function(error, world) {
+		if(error) throw error;
+		
+		console.log(world);
+		svgGlobalProjection.selectAll("path.land")
+			.data(world.features) // .datum() instead maybe?
+			.enter()
+			.append("path")
+			.classed("land", true)
+			.attr("d", path)
+		
+		svgGlobalProjection
+			.datum(getBoundingFeature(maps.vi))
+			.append("path")
+			.attr("id", "vi")
+			.classed("global-bounds", true)
+			.attr("d", path)
+			.on("mouseover", function(e) {
+				maps.vi.getContainer().classList.add("map-highlight");
+			})
+			.on("mouseout", function(e) {
+				maps.vi.getContainer().classList.remove("map-highlight");
+			});
+		
+		svgGlobalProjection
+			.datum(getBoundingFeature(maps.cph))
+			.append("path")
+			.attr("id", "cph")
+			.classed("global-bounds", true)
+			.attr("d", path)
+			.on("mouseover", function(e) {
+				maps.cph.getContainer().classList.add("map-highlight");
+			})
+			.on("mouseout", function(e) {
+				maps.cph.getContainer().classList.remove("map-highlight");
+			})					
+	});
+}
 
 // If this is a gallery page, build the gallery
 if(galleryElem = document.getElementById("photoGallery")) {
