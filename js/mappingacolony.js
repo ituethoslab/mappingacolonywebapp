@@ -240,9 +240,22 @@ function nearbyEuropeanaItems(feature, callback) {
 	xhr.send();
 }
 
+// Accepts a GeoJSON feature, and a callback function
 function relatedEuropeanaItems(feature, callback) {
 	var europeanaRestUrl = "https://www.itu.dk/people/maco/mappingacolony/api/v3/api.php?controller=europeana&action=subject";
 	var europeanaQuery = europeanaRestUrl + "&s=" + feature.properties.themes[0]
+	var xhr = new XMLHttpRequest();
+	xhr.onload = function() {
+		callback(JSON.parse(xhr.responseText));
+	}
+	xhr.open('GET', europeanaQuery);
+	xhr.send();
+}
+
+// Accepts a string, and a callback function
+function relatedEuropeanaItemsForSubject(subject, callback) {
+	var europeanaRestUrl = "https://www.itu.dk/people/maco/mappingacolony/api/v3/api.php?controller=europeana&action=subject";
+	var europeanaQuery = europeanaRestUrl + "&s=" + subject;
 	var xhr = new XMLHttpRequest();
 	xhr.onload = function() {
 		callback(JSON.parse(xhr.responseText));
@@ -305,14 +318,26 @@ function onEachFeature(feature, layer) {
 			maxHeight: 400,
 			autoPan: true
 		});
+		// Brace yourself for spaghetti code. When popups are opened,
+		// This connects to Europeana, pulls numbers of items in their
+		// dc:Subject, and dynamically appends them to the bottom of
+		// the popups
 		if(feature.properties.themes) {
 			layer.on("popupopen", function(event) {
 				if(!event.popup.europeanaretrieved) {
-					var theme = event.target.feature.properties.themes[0];
-					relatedEuropeanaItems(event.target.feature, function(europeanaresults) {
-						event.popup.setContent(event.popup.getContent() + '<a class="europeana-link" href="http://www.europeana.eu/portal/en/search?q=proxy_dc_subject:' + theme + '" alt="See Europeana content about ' + theme + '" target="_blank">' + '<div class="europeana-subjects"><img class=europeana-logo src="https://blogit.itu.dk/mappingacolonyen/wp-content/uploads/sites/44/2017/07/EU_basic_logo_landscape_black.png" />' + theme + ': ' + europeanaresults.totalResults + '</div></a>');
+					event.popup.setContent(event.popup.getContent() + '<div class="europeana-subjects"><div class="europeana-logo"><img class="europeana-logo" src="https://blogit.itu.dk/mappingacolonyen/wp-content/uploads/sites/44/2017/07/EU_basic_logo_landscape_black.png" /></div><div class="europeana-links"></div></div>');
+					event.target.feature.properties.themes.forEach(function(theme) {
+						relatedEuropeanaItemsForSubject(theme, function(res) {
+							var sElem = document.createElement("a");
+							sElem.classList.add("europeana-link");
+							sElem.href = "http://www.europeana.eu/portal/en/search?q=proxy_dc_subject:" + theme;
+							sElem.title = "See cultural heritage content about " + theme + " on Europeana";
+							sElem.target = "_blank";
+							sElem.text = theme + " (" + res.totalResults + "), ";
+							var ssElem = event.popup.getElement().getElementsByClassName("europeana-links")[0];
+							ssElem.appendChild(sElem);
+						});
 					});
-					event.popup.europeanaretrieved = true;
 				}
 			});
 		}

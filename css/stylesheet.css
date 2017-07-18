@@ -27,7 +27,7 @@ div.contributor {
 }
 
 div.sources {
-	background-color: lightgrey;
+	background-color: #e0e0e0;
 	font-size: smaller;
 	padding: 5px;
 }
@@ -160,12 +160,21 @@ img.gallery-thumbnail {
 
 div.europeana-subjects {
 	background-color: #4BC0F0;
+	min-height: 45px;
+}
+
+div.europeana-links {
 	padding: 10px;
 }
 
 a.europeana-link {
 	text-decoration: none;
 	color: black;
+}
+
+div.europeana-logo {
+	float: left;
+	padding: 10px;
 }
 
 img.europeana-logo {
