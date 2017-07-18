@@ -440,6 +440,10 @@ d3.request(dataUrl, function(error, xhr) {
 		});
 	};
 
+	if(noElem = document.getElementById("numOfData")) {
+		document.getElementById("numOfData").innerText = data.features.length;
+	}
+
 	// Leaflet (>= 1.0.3) load GeoJSON objects
 	if(maps.vi) {
 		L.geoJSON(data, {
