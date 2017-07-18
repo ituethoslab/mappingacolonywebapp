@@ -550,6 +550,7 @@ if(galleryElem = document.getElementById("photoGallery")) {
 				a.setAttribute("href", image.url);
 				a.dataset.fancybox = image.theme[lang];
 				a.dataset.caption = image.caption[lang] || "";
+				image.source ? a.dataset.caption += ' <a href="' + image.source + '">Source ' + new URL(image.source).host + '</a>' : null;
 				var img = document.createElement("img");
 				img.classList.add("gallery-thumbnail");
 				img.setAttribute("src", image.url);
