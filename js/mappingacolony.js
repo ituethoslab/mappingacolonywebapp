@@ -325,7 +325,7 @@ function onEachFeature(feature, layer) {
 		if(feature.properties.themes) {
 			layer.on("popupopen", function(event) {
 				if(!event.popup.europeanaretrieved) {
-					event.popup.setContent(event.popup.getContent() + '<div class="europeana-subjects"><div class="europeana-logo"><img class="europeana-logo" src="https://blogit.itu.dk/mappingacolonyen/wp-content/uploads/sites/44/2017/07/EU_basic_logo_landscape_black.png" /></div><div class="europeana-links"></div></div>');
+					event.popup.setContent(event.popup.getContent() + '<div class="europeana-subjects"><a href="https://europeana.eu" title="Europeana"><div class="europeana-logo"><img class="europeana-logo" src="https://blogit.itu.dk/mappingacolonyen/wp-content/uploads/sites/44/2017/07/EU_basic_logo_landscape_black.png" /></div></a><div class="europeana-links"></div></div>');
 					event.target.feature.properties.themes.forEach(function(theme) {
 						relatedEuropeanaItemsForSubject(theme, function(res) {
 							var sElem = document.createElement("a");
@@ -333,7 +333,7 @@ function onEachFeature(feature, layer) {
 							sElem.href = "http://www.europeana.eu/portal/en/search?q=proxy_dc_subject:" + theme;
 							sElem.title = "See cultural heritage content about " + theme + " on Europeana";
 							sElem.target = "_blank";
-							sElem.text = theme + " (" + res.totalResults + "), ";
+							sElem.text = theme + " (" + res.totalResults + ") ";
 							var ssElem = event.popup.getElement().getElementsByClassName("europeana-links")[0];
 							ssElem.appendChild(sElem);
 						});
