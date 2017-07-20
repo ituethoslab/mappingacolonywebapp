@@ -1,6 +1,5 @@
-// var dataUrl = "https://www.itu.dk/people/maco/mappingacolony/api.php?format=csv&cached=false";
-var dataUrl = "https://www.itu.dk/people/maco/mappingacolony/api/v3/api.php?controller=mapData&action=dumpstorage&format=csv";
-var galleryUrl = "https://www.itu.dk/people/maco/mappingacolony/api/v3/api.php?controller=photoGallery&action=dumpstorage&format=csv";
+var dataUrl = "https://www.itu.dk/people/maco/mappingacolony/api/v3?controller=mapData&action=dumpstorage&format=csv";
+var galleryUrl = "https://www.itu.dk/people/maco/mappingacolony/api/v3?controller=photoGallery&action=dumpstorage&format=csv";
 
 var macdata = undefined; // for inspection purposes
 var macgallery = undefined; // for inspection purposes
@@ -230,7 +229,7 @@ function geoJsonToStoryMap(geojson, narrative) {
 
 // Sketching Europeana connection
 function nearbyEuropeanaItems(feature, callback) {
-	var europeanaRestUrl = "https://www.itu.dk/people/maco/mappingacolony/api/v3/api.php?controller=europeana&action=nearby";
+	var europeanaRestUrl = "https://www.itu.dk/people/maco/mappingacolony/api/v3?controller=europeana&action=nearby";
 	var europeanaQuery = europeanaRestUrl + "&lat=" + feature.geometry.coordinates[0] + "&long=" + feature.geometry.coordinates[1];
 	var xhr = new XMLHttpRequest();
 	xhr.onload = function() {
@@ -242,7 +241,7 @@ function nearbyEuropeanaItems(feature, callback) {
 
 // Accepts a GeoJSON feature, and a callback function
 function relatedEuropeanaItems(feature, callback) {
-	var europeanaRestUrl = "https://www.itu.dk/people/maco/mappingacolony/api/v3/api.php?controller=europeana&action=subject";
+	var europeanaRestUrl = "https://www.itu.dk/people/maco/mappingacolony/api/v3?controller=europeana&action=subject";
 	var europeanaQuery = europeanaRestUrl + "&s=" + feature.properties.themes[0]
 	var xhr = new XMLHttpRequest();
 	xhr.onload = function() {
@@ -254,7 +253,7 @@ function relatedEuropeanaItems(feature, callback) {
 
 // Accepts a string, and a callback function
 function relatedEuropeanaItemsForSubject(subject, callback) {
-	var europeanaRestUrl = "https://www.itu.dk/people/maco/mappingacolony/api/v3/api.php?controller=europeana&action=subject";
+	var europeanaRestUrl = "https://www.itu.dk/people/maco/mappingacolony/api/v3?controller=europeana&action=subject";
 	var europeanaQuery = europeanaRestUrl + "&s=" + subject;
 	var xhr = new XMLHttpRequest();
 	xhr.onload = function() {
@@ -409,7 +408,7 @@ d3.request(dataUrl, function(error, xhr) {
 	// do StoryMap, if this is a storymap page
 	if (smContainerElement = document.getElementById("storymap")) {
 		console.log("storymap page");
-		d3.json('https://www.itu.dk/people/maco/mappingacolony/api/v3/api.php?controller=narrative&action=get', function(narrativeError, narrativeData) {
+		d3.json('https://www.itu.dk/people/maco/mappingacolony/api/v3?controller=narrative&action=get', function(narrativeError, narrativeData) {
 			if(narrativeError) {throw narrativeError};
 			console.log(narrativeData)
 
