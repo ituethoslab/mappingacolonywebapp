@@ -9,7 +9,13 @@ The clientside interacts with the [middleware
 API](https://github.com/xmacex/mappingacolonyapi), most importantly to
 pull data from storage. The division of labour is somewhat messy, and
 as it is currently, parsing of CSV to more structured data model is
-done by the client.
+done by the client. In terms of lines, this is much of the clientside
+program. Primary storage format on the client side is
+[GeoJSON](http://geojson.org/), from which
+[StoryMap](https://storymap.knightlab.com/advanced/#json-syntax)
+format is generated, based on the narratives. The gallery is modelled
+in generated, D3 nested HTML, which Fancybox interprets for the
+gallery function.
 
 ## Codes
 
@@ -31,7 +37,7 @@ of countries.
 
 ## Dependencies
 
-A couple of JavaScript libraries is used.
+A couple of JavaScript libraries are used.
 
 * [Leaflet](https://leafletjs.com) for tilemaps
 * [D3](https://d3js.org) for CSV parsing, global map etc.
