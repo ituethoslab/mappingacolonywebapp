@@ -31,7 +31,7 @@ elements. They are
 Each one of which requires access to the various types of data in the
 project. The first three require the main map data items, parsed into
 GeoJSON by this program. The third one additionally requires the
-narratives. The third one requires access to the gallery data, and the
+narratives. The fourth one requires access to the gallery data, and the
 last one is a project non-specific overview map, relying on a dataset
 of countries.
 
