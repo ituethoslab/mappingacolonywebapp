@@ -425,7 +425,7 @@ d3.request(dataUrl, function(error, xhr) {
 			smElement.id = "makestorymaphereplease";
 			smContainerElement.append(smElement);
 			
-			buildNarrativeButtons(narratives, smSelectorElement, smElement);
+			buildNarrativeButtons(narratives.filter(n => n.published), smSelectorElement, smElement);
 
 			indicateDivLoading(smElement, true);
 			jQuery.getScript("https://cdn.knightlab.com/libs/storymapjs/latest/js/storymap-min.js", function() {
