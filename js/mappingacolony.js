@@ -307,12 +307,12 @@ function onEachFeature(feature, layer) {
 	if(feature.geometry.coordinates[0] && feature.geometry.coordinates[1]) {
 		var title = feature.properties.name ? "<h3>" + (feature.properties.name[lang] || "") + "</h3>" : "";
 		var address = feature.properties.address ? "<div class='popupAddress'>" + (feature.properties.address || "") + "</div>" : "";
-		var img = feature.properties.pic.url ? '<div class="media"><img src="' + feature.properties.pic.url + '" class="popup"/></div>' : "";
+		var media = feature.properties.pic.url ? '<div class="media">' + buildPopupMedia(feature.properties.pic.url) + '</div>': "";
 		var caption = feature.properties.pic.caption[lang] ? "<div class='popupCaption'>" + (feature.properties.pic.caption[lang] || "") + "</div>" : "";
 		var content = feature.properties.story[lang] ? "<p>" + feature.properties.story[lang] + "</p>" : "";
 		var contributor = feature.properties.contributor ? "<div class='contributor'>" + (feature.properties.contributor || "") + "</div>" : "";
 		var sources = feature.properties.sources ? "<div class='sources'>" + (feature.properties.sources || "") + "</div>" : "";
-		var contentHtml = title + address + img + caption + content + contributor + sources;
+		var contentHtml = title + address + media + caption + content + contributor + sources;
 		layer.bindPopup(contentHtml, {
 			maxHeight: 400,
 			autoPan: true
@@ -340,32 +340,13 @@ function onEachFeature(feature, layer) {
 				}
 			});
 		}
-		// The media URL points to a Youtube video, so let's make a
-		// player for it. This actually replaces the already placed
-		// content, instead of making it properly in the first place
-		// :-( Refactoring needed
-
-		if(feature.properties.pic.url
-		   && feature.properties.pic.url.includes("youtube")
-		   && feature.properties.pic.url.includes("v=")) {
-			var ytUrl = feature.properties.pic.url;
-			var vId = getVideoId(ytUrl);
+		// If the media is a YouTube video, let's make a player for
+		// it. Assumes that the Youtube Iframe API script has
+		// successfully loaded (lol so bad)
+		if(jQuery(jQuery.parseHTML(layer.getPopup().getContent())).find("div.ytplayer")) {
 			layer.on("popupopen", function(event) {
-				var playerDiv = document.createElement("div");
-				playerDiv.id = "ytplayer-" + vId;
-				playerDiv.classList.add("ytplayer");
-
-				// event.popup.getElement().getElementsByClassName("media")[0].childNodes = playerDiv;
-				mediaDiv = event.popup.getElement().getElementsByClassName("media")[0];
-				/*while(mediaDiv.firstChild) {
-					mediaDiv.firstChild.remove();
-				}
-				mediaDiv.append(playerDiv);
-				*/
-				mediaDiv.replaceChild(playerDiv, mediaDiv.firstChild)
-				
-				var player;
-				player = new YT.Player('ytplayer-' + vId, {
+				var vId = getVideoId(event.target.feature.properties.pic.url);
+				var player = new YT.Player('ytplayer-' + vId, {
 					videoId: vId,
 					events: {
 						"onReady": onPlayerReady
@@ -375,6 +356,15 @@ function onEachFeature(feature, layer) {
 		}
 	};
 };
+
+function buildPopupMedia(mediaUrl) {
+	if(mediaUrl.includes("youtube")
+	   && mediaUrl.includes("v=")) {
+		return '<div id="ytplayer-' + getVideoId(mediaUrl) + '" class="ytplayer"></div>'
+	} else {
+		return '<img src="' + mediaUrl + '" class="popup"/>'
+	}
+}
 
 function onYouTubeIframeAPIReady() {
 	// console.log("Running Youtube Iframe API ready handler");
