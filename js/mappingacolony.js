@@ -307,7 +307,7 @@ function onEachFeature(feature, layer) {
 	if(feature.geometry.coordinates[0] && feature.geometry.coordinates[1]) {
 		var title = feature.properties.name ? "<h3>" + (feature.properties.name[lang] || "") + "</h3>" : "";
 		var address = feature.properties.address ? "<div class='popupAddress'>" + (feature.properties.address || "") + "</div>" : "";
-		var img = feature.properties.pic.url ? '<img src="' + feature.properties.pic.url + '" class="popup"/>' : "";
+		var img = feature.properties.pic.url ? '<div class="media"><img src="' + feature.properties.pic.url + '" class="popup"/></div>' : "";
 		var caption = feature.properties.pic.caption[lang] ? "<div class='popupCaption'>" + (feature.properties.pic.caption[lang] || "") + "</div>" : "";
 		var content = feature.properties.story[lang] ? "<p>" + feature.properties.story[lang] + "</p>" : "";
 		var contributor = feature.properties.contributor ? "<div class='contributor'>" + (feature.properties.contributor || "") + "</div>" : "";
@@ -340,8 +340,80 @@ function onEachFeature(feature, layer) {
 				}
 			});
 		}
+		// The media URL points to a Youtube video, so let's make a
+		// player for it. This actually replaces the already placed
+		// content, instead of making it properly in the first place
+		// :-( Refactoring needed
+
+		if(feature.properties.pic.url
+		   && feature.properties.pic.url.includes("youtube")
+		   && feature.properties.pic.url.includes("v=")) {
+			var ytUrl = feature.properties.pic.url;
+			var vId = getVideoId(ytUrl);
+			layer.on("popupopen", function(event) {
+				var playerDiv = document.createElement("div");
+				playerDiv.id = "ytplayer-" + vId;
+				playerDiv.classList.add("ytplayer");
+
+				// event.popup.getElement().getElementsByClassName("media")[0].childNodes = playerDiv;
+				mediaDiv = event.popup.getElement().getElementsByClassName("media")[0];
+				/*while(mediaDiv.firstChild) {
+					mediaDiv.firstChild.remove();
+				}
+				mediaDiv.append(playerDiv);
+				*/
+				mediaDiv.replaceChild(playerDiv, mediaDiv.firstChild)
+				
+				var player;
+				player = new YT.Player('ytplayer-' + vId, {
+					videoId: vId,
+					events: {
+						"onReady": onPlayerReady
+					}
+				});
+			});
+		}
 	};
 };
+
+function onYouTubeIframeAPIReady() {
+	// console.log("Running Youtube Iframe API ready handler");
+}
+
+function onPlayerReady(event) {
+	// console.log("Running player ready handler");
+	// event.target.playVideo(); // autoplay
+}
+
+// Parse an URL
+function parseURL(url) {
+    var parser = document.createElement('a'),
+        searchObject = {},
+        queries, split, i;
+    // Let the browser do the work
+    parser.href = url;
+    // Convert query string to object
+    queries = parser.search.replace(/^\?/, '').split('&');
+    for( i = 0; i < queries.length; i++ ) {
+        split = queries[i].split('=');
+        searchObject[split[0]] = split[1];
+    }
+    return {
+        protocol: parser.protocol,
+        host: parser.host,
+        hostname: parser.hostname,
+        port: parser.port,
+        pathname: parser.pathname,
+        search: parser.search,
+        searchObject: searchObject,
+        hash: parser.hash
+    };
+}
+
+// Extract video ID from an URL
+function getVideoId(ytUrl) {
+	return parseURL(ytUrl).searchObject.v;
+}
 
 function getBoundingFeature(map) {
 	var b = map.getBounds();
