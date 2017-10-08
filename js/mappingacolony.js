@@ -51,6 +51,11 @@ function htmlLinebreaks(s) {
 	return s.replace(/(?:\r\n|\r|\n)/g, '<br />');
 }
 
+// a helper for inferring links in strings
+function htmlLinks(s) {
+	return s.replace(/(http.*?)( |\n|$)/g, '<a href="$1">$1</a>$2');
+}
+
 function googleSheetCsvToGeoJson(gsheet) {
 	// JSON object
 	var json = {
@@ -316,7 +321,7 @@ function onEachFeature(feature, layer) {
 		var caption = feature.properties.pic.caption[lang] ? "<div class='popupCaption'>" + (feature.properties.pic.caption[lang] || "") + "</div>" : "";
 		var content = feature.properties.story[lang] ? "<p>" + htmlLinebreaks(feature.properties.story[lang]) + "</p>" : "";
 		var contributor = feature.properties.contributor ? "<div class='contributor'>" + (feature.properties.contributor || "") + "</div>" : "";
-		var sources = feature.properties.sources ? "<div class='sources'>" + (htmlLinebreaks(feature.properties.sources) || "") + "</div>" : "";
+		var sources = feature.properties.sources ? "<div class='sources'>" + (htmlLinebreaks(htmlLinks(feature.properties.sources)) || "") + "</div>" : "";
 		var contentHtml = title + address + media + caption + content + contributor + sources;
 		layer.bindPopup(contentHtml, {
 			maxHeight: 400,
