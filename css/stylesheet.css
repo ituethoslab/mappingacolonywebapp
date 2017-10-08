@@ -120,6 +120,10 @@ button {
 	color: #314057;
 }
 
+.leaflet-popup-content {
+	min-width: 300px;
+}
+
 .graticule {
 	fill-opacity: 0;
 	stroke: #e0e0e0;
