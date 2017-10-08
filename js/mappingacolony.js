@@ -303,15 +303,19 @@ function pointToLayer(feature, latlng) {
 	return m;
 }
 
+function htmlLinebreaks(s) {
+	return s.replace(/(?:\r\n|\r|\n)/g, '<br />');
+}
+
 function onEachFeature(feature, layer) {
 	if(feature.geometry.coordinates[0] && feature.geometry.coordinates[1]) {
 		var title = feature.properties.name ? "<h3>" + (feature.properties.name[lang] || "") + "</h3>" : "";
 		var address = feature.properties.address ? "<div class='popupAddress'>" + (feature.properties.address || "") + "</div>" : "";
 		var media = feature.properties.pic.url ? '<div class="media">' + buildPopupMedia(feature.properties.pic.url) + '</div>': "";
 		var caption = feature.properties.pic.caption[lang] ? "<div class='popupCaption'>" + (feature.properties.pic.caption[lang] || "") + "</div>" : "";
-		var content = feature.properties.story[lang] ? "<p>" + feature.properties.story[lang] + "</p>" : "";
+		var content = feature.properties.story[lang] ? "<p>" + htmlLinebreaks(feature.properties.story[lang]) + "</p>" : "";
 		var contributor = feature.properties.contributor ? "<div class='contributor'>" + (feature.properties.contributor || "") + "</div>" : "";
-		var sources = feature.properties.sources ? "<div class='sources'>" + (feature.properties.sources || "") + "</div>" : "";
+		var sources = feature.properties.sources ? "<div class='sources'>" + (htmlLinebreaks(feature.properties.sources) || "") + "</div>" : "";
 		var contentHtml = title + address + media + caption + content + contributor + sources;
 		layer.bindPopup(contentHtml, {
 			maxHeight: 400,
