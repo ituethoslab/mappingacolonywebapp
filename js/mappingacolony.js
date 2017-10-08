@@ -81,7 +81,10 @@ function googleSheetCsvToGeoJson(gsheet) {
 					"da": p(row['Story (Danish)']),
 					"en": p(row['Story (English)'])
 				},
-				"sources": p(row['Sources']),
+				"sources": {
+					"da": p(row['Sources (Danish)']),
+					"en": p(row['Sources (English)'])
+				},
 				"pic": {
 					"url": p(row['Media URL']),
 					"source": p(row['Media source']),
@@ -316,7 +319,7 @@ function onEachFeature(feature, layer) {
 		var caption = feature.properties.pic.caption[lang] ? "<div class='popupCaption'>" + (feature.properties.pic.caption[lang] || "") + "</div>" : "";
 		var content = feature.properties.story[lang] ? "<p class='linebreaks'>" + feature.properties.story[lang] + "</p>" : "";
 		var contributor = feature.properties.contributor ? "<div class='contributor'>" + (feature.properties.contributor || "") + "</div>" : "";
-		var sources = feature.properties.sources ? "<div class='sources linebreaks'>" + htmlLinks(feature.properties.sources) || "" + "</div>" : "";
+		var sources = feature.properties.sources[lang] ? "<div class='sources linebreaks'>" + htmlLinks(feature.properties.sources[lang]) || "" + "</div>" : "";
 		var contentHtml = title + address + media + caption + content + contributor + sources;
 		layer.bindPopup(contentHtml, {
 			maxHeight: 400,
