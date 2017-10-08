@@ -46,6 +46,11 @@ function p(s) {
 	return s == "" ? null : s;
 };
 
+// a helper for HTML linebreaks
+function htmlLinebreaks(s) {
+	return s.replace(/(?:\r\n|\r|\n)/g, '<br />');
+}
+
 function googleSheetCsvToGeoJson(gsheet) {
 	// JSON object
 	var json = {
@@ -301,10 +306,6 @@ function pointToLayer(feature, latlng) {
 	});
 
 	return m;
-}
-
-function htmlLinebreaks(s) {
-	return s.replace(/(?:\r\n|\r|\n)/g, '<br />');
 }
 
 function onEachFeature(feature, layer) {
