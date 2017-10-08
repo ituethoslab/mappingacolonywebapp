@@ -25,6 +25,10 @@ div.sources {
 	padding: 5px;
 }
 
+.linebreaks {
+	white-space: pre-wrap;
+}
+
 svg#d3svgElement {
 	background: #c6c6c6;
 }

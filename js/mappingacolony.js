@@ -46,11 +46,6 @@ function p(s) {
 	return s == "" ? null : s;
 };
 
-// a helper for HTML linebreaks
-function htmlLinebreaks(s) {
-	return s.replace(/(?:\r\n|\r|\n)/g, '<br />');
-}
-
 // a helper for inferring links in strings
 function htmlLinks(s) {
 	return s.replace(/(http.*?)( |\n|$)/g, '<a href="$1">$1</a>$2');
@@ -83,8 +78,8 @@ function googleSheetCsvToGeoJson(gsheet) {
 				"persons": p(row['Person(s) (seperated by comma)'].split(',').map(n => n.trim())),
 				"themes": p(row['Themes (seperated by comma)'].split(',').map(t => t.trim())),
 				"story": {
-					"da": p(row['Story (Danish)'].replace(/\n/g, "<br>")),
-					"en": p(row['Story (English)'].replace(/\n/g, "<br>"))
+					"da": p(row['Story (Danish)']),
+					"en": p(row['Story (English)'])
 				},
 				"sources": p(row['Sources']),
 				"pic": {
@@ -319,9 +314,9 @@ function onEachFeature(feature, layer) {
 		var address = feature.properties.address ? "<div class='popupAddress'>" + (feature.properties.address || "") + "</div>" : "";
 		var media = feature.properties.pic.url ? '<div class="media">' + buildPopupMedia(feature.properties.pic.url) + '</div>': "";
 		var caption = feature.properties.pic.caption[lang] ? "<div class='popupCaption'>" + (feature.properties.pic.caption[lang] || "") + "</div>" : "";
-		var content = feature.properties.story[lang] ? "<p>" + htmlLinebreaks(feature.properties.story[lang]) + "</p>" : "";
+		var content = feature.properties.story[lang] ? "<p class='linebreaks'>" + feature.properties.story[lang] + "</p>" : "";
 		var contributor = feature.properties.contributor ? "<div class='contributor'>" + (feature.properties.contributor || "") + "</div>" : "";
-		var sources = feature.properties.sources ? "<div class='sources'>" + (htmlLinebreaks(htmlLinks(feature.properties.sources)) || "") + "</div>" : "";
+		var sources = feature.properties.sources ? "<div class='sources linebreaks'>" + htmlLinks(feature.properties.sources) || "" + "</div>" : "";
 		var contentHtml = title + address + media + caption + content + contributor + sources;
 		layer.bindPopup(contentHtml, {
 			maxHeight: 400,
