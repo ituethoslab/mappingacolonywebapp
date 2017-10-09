@@ -124,6 +124,10 @@ button {
 	min-width: 300px;
 }
 
+div.ytplayer {
+	height: 300px;
+}
+
 .graticule {
 	fill-opacity: 0;
 	stroke: #e0e0e0;
