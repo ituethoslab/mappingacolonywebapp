@@ -353,7 +353,7 @@ function onEachFeature(feature, layer) {
 		// successfully loaded (lol so bad)
 		if(jQuery(jQuery.parseHTML(layer.getPopup().getContent())).find("div.ytplayer")) {
 			layer.on("popupopen", function(event) {
-				var vId = getVideoId(event.target.feature.properties.pic.url);
+				var vId = getYtVideoId(event.target.feature.properties.pic.url);
 				var player = new YT.Player('ytplayer-' + vId, {
 					videoId: vId,
 					events: {
@@ -362,13 +362,25 @@ function onEachFeature(feature, layer) {
 				});
 			});
 		}
+		// If the media is a Facebook video, let's make a player for
+		// it. Assumes that the Facebook API script has successfully
+		// loaded (lol so bad)
+		if(jQuery(jQuery.parseHTML(layer.getPopup().getContent())).find("div.fbplayer")) {
+			layer.on("popupopen", function(event) {
+				FB.init({'version': 'v2.10'});
+				FB.XFBML.parse(layer.getPopup().getElement());
+			});
+		}
 	};
 };
 
 function buildPopupMedia(mediaUrl) {
 	if(mediaUrl.includes("youtube")
 	   && mediaUrl.includes("v=")) {
-		return '<div id="ytplayer-' + getVideoId(mediaUrl) + '" class="ytplayer"></div>'
+		return '<div id="ytplayer-' + getYtVideoId(mediaUrl) + '" class="ytplayer"></div>';
+	} else if(mediaUrl.includes("facebook") 
+			  && mediaUrl.includes("/videos/")) {
+		return '<div class="fb-video" data-href="' + mediaUrl + '"></div>';
 	} else {
 		return '<img src="' + mediaUrl + '" class="popup"/>'
 	}
@@ -409,7 +421,7 @@ function parseURL(url) {
 }
 
 // Extract video ID from an URL
-function getVideoId(ytUrl) {
+function getYtVideoId(ytUrl) {
 	return parseURL(ytUrl).searchObject.v;
 }
 
