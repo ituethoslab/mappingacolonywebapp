@@ -120,6 +120,10 @@ button {
 	color: #314057;
 }
 
+.vco-text-content {
+	white-space: pre-wrap;
+}
+
 .leaflet-popup-content {
 	min-width: 300px;
 }
