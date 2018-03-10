@@ -111,6 +111,10 @@ button {
     height: 800px;
 }
 
+.leaflet-control-container > .leaflet-top {
+    z-index: 900;
+}
+
 /* This allows adding more markers, but adds some funk regarding lines and break zoom */
 .vco-map .leaflet-overlay-pane {
     /*	z-index: 400; */
