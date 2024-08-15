@@ -23,7 +23,8 @@ var mapConf = {
 
 var storymapOptions = {
 	calculate_zoom: false, // This maybe worth changing, but I am deciding to not zoom out because Mercator projection
-	map_type: mapConf.bwmapnik.baseUrl
+	// map_type: mapConf.bwmapnik.baseUrl
+	map_type: "osm:standard"
 };
 
 var regionCenters = {
@@ -449,15 +450,15 @@ var mapOptions = {
 if(document.getElementById("vi")) {
 	maps.vi = L.map("vi", mapOptions)
 		.setView([regionCenters.vi[1], regionCenters.vi[0]]);
-	L.tileLayer(mapConf.bwmapnik.baseUrl, {
-		attribution: mapConf.bwmapnik.attribution}).addTo(maps.vi);
+	L.tileLayer(mapConf.osm.baseUrl, {
+		attribution: mapConf.osm.attribution}).addTo(maps.vi);
 	L.control.scale().addTo(maps.vi)
 }
 if(document.getElementById("cph")) {
 	maps.cph = L.map("cph", mapOptions)
 		.setView([regionCenters.cph[1], regionCenters.cph[0]])
-	L.tileLayer(mapConf.bwmapnik.baseUrl, {
-		attribution: mapConf.bwmapnik.attribution}).addTo(maps.cph);
+	L.tileLayer(mapConf.osm.baseUrl, {
+		attribution: mapConf.osm.attribution}).addTo(maps.cph);
 	L.control.scale().addTo(maps.cph)
 }
 
